@@ -1,2 +1,8 @@
-export FLASK_APP=/root/coolkidz/rest_backend/restful.py
-flask run --host=142.93.133.0
+export FLASK_APP=$(pwd)/restful.py
+if [ "$#" -eq 1 ]
+then
+	host=$1
+else
+	host=127.0.0.1
+fi
+flask run --host=$host
