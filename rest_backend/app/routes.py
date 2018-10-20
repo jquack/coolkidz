@@ -24,7 +24,7 @@ def upload(address):
     board = Boards.query.filter_by(board_address=address).first()
     expense = Expenses(board_id=board.board_id, photo_filename=uniq_name)
     db.session.add(expense)
-    db.commit()
+    db.session.commit()
     return json.dumps({
         'filename': uniq_name,
         'items': res,
@@ -74,11 +74,13 @@ def boardinfo(address):
     elif request.method == "PUT":
         board_name = request.args.get('name')
         users = eval(request.args.get('users'))
-        address = uuid.uuid4()
-        newboard = Boards(board_address=address, users_list=str(users))
+        print(users)
+        address = str(uuid.uuid4())
+        newboard = Boards(board_address=address, name = board_name, users_list=repr(users))
         db.session.add(newboard)
         db.session.commit()
-        return address
+        print("Created board:", newboard)
+        return json.dumps({'address':address})
 
     elif request.method == "POST":
         try:
