@@ -29,7 +29,7 @@ def upload(address):
         'filename': uniq_name,
         'items': res,
         'expense_id': expense.expense_id
-    })
+    }, ensure_ascii=False)
 
 
 @app.route('/board/<string:address>/', methods=['GET', 'POST', 'PUT'])
@@ -52,14 +52,11 @@ def boardinfo(address):
                     expense_id=ticket.expense_id).all():
                 # 1 item of 1 ticket
                 concerned = set()
-                for person in eval(item.concerned_users):
-                    name = person[0]
-                    quantity = person[1]
-                    sum = person[2]
+                for name, quantity, amount in eval(item.concerned_users):
                     concerned.add({
                         'name': name,
                         'quantity': quantity,
-                        'sum': sum
+                        'sum': amount
                     })
                 item += [{
                     "name": item.item_name,
@@ -78,7 +75,7 @@ def boardinfo(address):
         board_name = request.args.get('name')
         users = eval(request.args.get('users'))
         address = uuid.uuid4()
-        newboard = Boards(board_address=address, users_list=users)
+        newboard = Boards(board_address=address, users_list=str(users))
         db.session.add(newboard)
         db.session.commit()
         return address
@@ -86,14 +83,14 @@ def boardinfo(address):
     elif request.method == "POST":
         try:
             exp_id = int(request.args.get('expense_id'))
-            total = float(request.args.get('total'))
+            amount = float(request.args.get('total'))
             date = request.args.get('date')
             payers = eval(request.args.get('payers'))
             ticket_items = eval(request.args.get("items"))
         except ValueError as e:
             return json.dumps({"code": 400, "error": e})
         expense = Expenses.query.get(exp_id)
-        expense.amount = total
+        expense.amount = amount
         expense.payers = payers
         expense.date = date
         for item_name, item_price, concerned_list in ticket_items:
