@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
+import 'package:bill_splitter/classes/bill_item.dart';
 import 'package:bill_splitter/utils/navigators.dart';
 import 'package:bill_splitter/utils/server_utils.dart';
 import 'package:dio/dio.dart';
@@ -21,10 +22,12 @@ class CropRoute extends StatefulWidget {
 
 class _CropRouteState extends State<CropRoute> {
   File image;
+  List response;
 
   @override
   initState() {
     super.initState();
+    response = null;
     image = widget.image;
   }
 
@@ -38,40 +41,56 @@ class _CropRouteState extends State<CropRoute> {
       setState(() {
         image = croppedFile;
       });
-      upload();
+      upload(context);
     }
   }
 
   convert(Response receivedResponse) {
-    print(receivedResponse.data==null);
+    print(receivedResponse.data == null);
     print(receivedResponse.data);
-    Map<String, dynamic> map = json.decode(receivedResponse.data);
-    return map;
+    Map<String, dynamic> items =
+        json.decode(receivedResponse.data); //here we have the full expense
+    items = items["items"]; //here we have the list of items
+    return items.values
+        .map((item) => BillItem.fromJson(item as Map<String, dynamic>))
+        .toList();
   }
 
-  upload() async {
-    Map<String, dynamic> response = await postImage(image, convert);
-    navigateToBill(context, bill: response);
+  upload(BuildContext context) async {
+    response = await postImage(image, convert);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              child: Image.file(image),
-            ),
-          ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                child: Image.file(image),
+              ),
+              RaisedButton(
+                onPressed: navigate(context, response),
+                child: Text("Send"),
+              )
+            ],
+          ),
         ),
       ),
       floatingActionButton: IconButton(
         icon: Icon(Icons.crop),
-        onPressed: _cropImage,
+        onPressed: (() => _cropImage()),
         color: Colors.blue,
       ),
     );
+  }
+
+  navigate(BuildContext context, List response) {
+    if (response != null) {
+      navigateToBill(context, bill: response);
+    }
   }
 }
