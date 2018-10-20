@@ -13,10 +13,10 @@ def image_recognize(inputpath):
                 price = float(word.replace(",","."))
             except ValueError:
                 item += [word]
-        if price:
+        if price and item:
             items_list += [(" ".join(item), price)]
     return items_list
-    
+
 def main():
     image_recognize("bills/bill1.jpg")
 
