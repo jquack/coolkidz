@@ -1,8 +1,8 @@
-"""Boards, expenses, items
+"""All good
 
-Revision ID: 1d6c30340565
+Revision ID: d75f80e26f2b
 Revises: 
-Create Date: 2018-10-20 18:39:27.851459
+Create Date: 2018-10-20 22:52:41.319604
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '1d6c30340565'
+revision = 'd75f80e26f2b'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,6 +22,7 @@ def upgrade():
     sa.Column('board_id', sa.Integer(), nullable=False),
     sa.Column('board_address', sa.String(), nullable=False),
     sa.Column('users_list', sa.String(), nullable=False),
+    sa.Column('name', sa.String(), nullable=False),
     sa.PrimaryKeyConstraint('board_id'),
     sa.UniqueConstraint('board_address')
     )
@@ -29,9 +30,9 @@ def upgrade():
     sa.Column('expense_id', sa.Integer(), nullable=False),
     sa.Column('board_id', sa.Integer(), nullable=False),
     sa.Column('amount', sa.Float(), nullable=True),
-    sa.Column('payers', sa.String(), nullable=False),
+    sa.Column('payers', sa.String(), nullable=True),
     sa.Column('photo_filename', sa.String(length=50), nullable=True),
-    sa.Column('date', sa.Date(), nullable=False),
+    sa.Column('date', sa.Date(), nullable=True),
     sa.ForeignKeyConstraint(['board_id'], ['boards.board_id'], ),
     sa.PrimaryKeyConstraint('expense_id'),
     sa.UniqueConstraint('photo_filename')

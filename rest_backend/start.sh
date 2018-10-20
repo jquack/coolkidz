@@ -1,4 +1,5 @@
-export FLASK_APP=$(pwd)/restful.py
+export FLASK_APP=$(pwd)/coolkidz.py
+
 if [ "$#" -eq 1 ]
 then
 	host=$1

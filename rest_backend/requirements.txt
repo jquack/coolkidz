@@ -1,0 +1,6 @@
+flask-sqlalchemy
+flask
+pytesseract
+pillow
+flask-migrate
+

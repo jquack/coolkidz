@@ -1,4 +1,4 @@
-from app import app
+from app import app, db
 from app.models import Boards, Expenses, Items
 import json
 import os
@@ -14,16 +14,22 @@ def helloworld():
     return "Hello world, 3.0"
 
 
-@app.route('/upload', methods=['POST'])
-def upload():
+@app.route('/upload/<string:address>', methods=['POST'])
+def upload(address):
     file = request.files['image']
-    # print(file)
-
     uniq_name, full_name = build_filename(file)
     file.save(full_name)
     res = read_img.image_recognize(full_name)
-    # print(res)
-    return json.dumps({'filename': uniq_name, 'items': res})
+
+    board = Boards.query.filter_by(board_address=address).first()
+    expense = Expenses(board_id=board.board_id, photo_filename=uniq_name)
+    db.session.add(expense)
+    db.session.commit()
+    return json.dumps({
+        'filename': uniq_name,
+        'items': res,
+        'expense_id': expense.expense_id
+    }, ensure_ascii=False)
 
 
 @app.route('/board/<string:address>/', methods=['GET', 'POST', 'PUT'])
@@ -41,19 +47,16 @@ def boardinfo(address):
                     'name': pay[0],
                     'amount': pay[1]
                 })
-            items = []
+            ticket_items = []
             for item in Items.query.filter_by(
                     expense_id=ticket.expense_id).all():
                 # 1 item of 1 ticket
                 concerned = set()
-                for person in eval(item.concerned_users):
-                    name = person[0]
-                    quantity = person[1]
-                    sum = person[2]
+                for name, quantity, amount in eval(item.concerned_users):
                     concerned.add({
                         'name': name,
                         'quantity': quantity,
-                        'sum': sum
+                        'sum': amount
                     })
                 item += [{
                     "name": item.item_name,
@@ -62,16 +65,45 @@ def boardinfo(address):
                 }]
             expenses.add({
                 'payers': payers,
-                'items': items,
+                'items': ticket_items,
                 'total': ticket.amount,
                 'date': ticket.date
             })
 
         return json.dumps({'address': address, 'expenses': expenses})
     elif request.method == "PUT":
-        body = request.args.get('name')
+        board_name = request.args.get('name')
+        users = eval(request.args.get('users'))
+        print(users)
+        address = str(uuid.uuid4())
+        newboard = Boards(board_address=address, name = board_name, users_list=repr(users))
+        db.session.add(newboard)
+        db.session.commit()
+        print("Created board:", newboard)
+        return json.dumps({'address':address})
+
     elif request.method == "POST":
-        pass
+        try:
+            exp_id = int(request.args.get('expense_id'))
+            amount = float(request.args.get('total'))
+            date = request.args.get('date')
+            payers = eval(request.args.get('payers'))
+            ticket_items = eval(request.args.get("items"))
+        except ValueError as e:
+            return json.dumps({"code": 400, "error": e})
+        expense = Expenses.query.get(exp_id)
+        expense.amount = amount
+        expense.payers = payers
+        expense.date = date
+        for item_name, item_price, concerned_list in ticket_items:
+            new_item = Items(
+                expense_id=exp_id,
+                item_name=item[0],
+                concerned_users=repr(concerned_list))
+            db.session.add(new_item)
+        db.session.commit()
+        return json.dumps({'code': 200})
+
 
 def build_filename(file):
     extension = os.path.splitext(file.filename)[1]

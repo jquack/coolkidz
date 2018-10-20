@@ -6,7 +6,8 @@ class Boards(db.Model):
     board_id = db.Column(db.Integer, primary_key=True)
     board_address = db.Column(db.String, unique=True, nullable=False)
     users_list = db.Column(db.String, nullable=False)
-
+    name = db.Column(db.String, nullable=False, default="Unknown")
+    
     def __repr__(self):
         return "Board {} at {} by {}".format(self.board_id, self.board_address, self.users_list)
 
@@ -18,9 +19,9 @@ class Expenses(db.Model):
         'boards.board_id'), nullable=False)
     amount = db.Column(db.Float)
     # "[(name, amount),...]"
-    payers = db.Column(db.String, nullable=False)
+    payers = db.Column(db.String)
     photo_filename = db.Column(db.String(50), unique=True)
-    date = db.Column(db.Date, nullable=False)
+    date = db.Column(db.Date)
 
     def __repr__(self):
         return "{} paid {} on board {} for {}; see image {}".format(
