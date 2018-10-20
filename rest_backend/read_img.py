@@ -4,6 +4,7 @@ import cv2
 
 
 
+
 def image_recognize(inputpath):
     # image = Image.open(inputpath)
 
@@ -19,7 +20,7 @@ def image_recognize(inputpath):
         price = None
         for word in row.split(" "):
             try:
-                price = float(word.replace(",","."))
+                price = float(word.replace(",", "."))
             except ValueError:
                 item += [word]
         if price and item:
@@ -27,6 +28,7 @@ def image_recognize(inputpath):
     # print(items_list)
     return items_list
 
+<<<<<<< HEAD
 def image_correction(img):
 
     blur = cv2.medianBlur(img,5)
@@ -34,9 +36,12 @@ def image_correction(img):
     # cv2.imwrite('img_corrected.png',img_corr)
 
     return img_corr
+=======
+>>>>>>> 9285ed8fcac55c19f3241f5c42668eb08db4c719
 
 def main():
     image_recognize("bills/bill5.jpg")
+
 
 if __name__ == "__main__":
     main()
