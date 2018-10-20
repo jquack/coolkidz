@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:bill_splitter/classes/bill_item.dart';
 import 'package:bill_splitter/utils/navigators.dart';
 import 'package:bill_splitter/utils/server_utils.dart';
+import 'package:bill_splitter/widgets/app_bar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -22,12 +23,12 @@ class CropRoute extends StatefulWidget {
 
 class _CropRouteState extends State<CropRoute> {
   File image;
-  List response;
+  List<BillItem> response;
 
   @override
   initState() {
     super.initState();
-    response = null;
+    response = [];
     image = widget.image;
   }
 
@@ -41,30 +42,27 @@ class _CropRouteState extends State<CropRoute> {
       setState(() {
         image = croppedFile;
       });
-      upload(context);
     }
   }
 
-  convert(Response receivedResponse) {
-    print(receivedResponse.data == null);
-    print(receivedResponse.data);
+  void convert(Response receivedResponse) {
     Map<String, dynamic> items =
         json.decode(receivedResponse.data); //here we have the full expense
-    items = items["items"]; //here we have the list of items
-    return items.values
-        .map((item) => BillItem.fromJson(item as Map<String, dynamic>))
-        .toList();
+    List itemList = items["items"];
+    itemList.forEach((item) => response.add(BillItem(name: item[0], price: item[item.length - 1])));
+    print("ItemList: $itemList");
   }
 
   upload(BuildContext context) async {
-    response = await postImage(image, convert);
+    await postImage(image, convert);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: appBar(context: context, backwards: true, title: "Crop image"),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -73,7 +71,7 @@ class _CropRouteState extends State<CropRoute> {
                 child: Image.file(image),
               ),
               RaisedButton(
-                onPressed: navigate(context, response),
+                onPressed: (() => navigate(context)),
                 child: Text("Send"),
               )
             ],
@@ -88,9 +86,8 @@ class _CropRouteState extends State<CropRoute> {
     );
   }
 
-  navigate(BuildContext context, List response) {
-    if (response != null) {
-      navigateToBill(context, bill: response);
-    }
+  navigate(BuildContext context) {
+    upload(context);
+    navigateToBill(context, bill: response);
   }
 }

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bill_splitter/classes/bill_item.dart';
 import 'package:bill_splitter/routes/bill_route.dart';
+import 'package:bill_splitter/routes/checkout_route.dart';
 import 'package:bill_splitter/routes/crop_route.dart';
 import 'package:bill_splitter/routes/item_route.dart';
 import 'package:flutter/material.dart';
@@ -16,4 +17,8 @@ navigateToBill(BuildContext context, {List bill}) {
 
 navigateToItem(BuildContext context, {BillItem item}) {
   Navigator.of(context).push(MaterialPageRoute(builder: (context) => ItemRoute(item: item)));
+}
+
+navigateToCheckout(BuildContext context){
+  Navigator.of(context).push(MaterialPageRoute(builder: (context) => CheckoutRoute()));
 }

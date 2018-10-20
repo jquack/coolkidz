@@ -1,15 +1,18 @@
+import 'package:bill_splitter/classes/concerned.dart';
+
 class BillItem {
   String name;
   double price;
-  List<String> payers;
+  List payers;
 
-  BillItem({name, price, payers});
+  BillItem({this.name, this.price, this.payers}): assert (name != null, price != null);
 
-  factory BillItem.fromJson(Map<String, dynamic> json) {
-    return BillItem(
-      name: json['name'] as String,
-      price: json['price'] as double,
-      payers: json['payers'] as List<String>,
-    );
+  addPayer(Concerned concerned){
+    if (payers == null) {
+      payers = [];
+    }
+    payers.add(concerned);
   }
+
+
 }

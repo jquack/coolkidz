@@ -10,20 +10,37 @@ class BillRoute extends StatefulWidget {
 }
 
 class _BillRouteState extends State<BillRoute> {
+  Widget bodyWidget;
+
   @override
   void initState() {
+    bodyWidget = Center(
+      child: Text(
+        "Loading...",
+      ),
+    );
     super.initState();
+  }
+
+  itemsList() {
+    if (widget.bill != null) {
+      setState(() {
+        bodyWidget = ListView.builder(
+          itemCount: widget.bill.length,
+          itemBuilder: (context, int) {
+            return billItemWidget(context: context, item: widget.bill[int]);
+          },
+        );
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: widget.bill.length,
-        itemBuilder: (context, int) {
-          return billItemWidget(context: context, item: widget.bill[int]);
-        },
-      ),
+      body: bodyWidget,
+      floatingActionButton:
+          IconButton(icon: Icon(Icons.refresh), onPressed: (() => itemsList())),
     );
   }
 }

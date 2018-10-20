@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bill_splitter/classes/bill_item.dart';
 import 'package:bill_splitter/utils/navigators.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,6 +12,13 @@ class MenuRoute extends StatefulWidget {
 
 class _MenuRouteState extends State<MenuRoute>{
   File _imageFile;
+  BillItem item;
+
+  @override
+  initState(){
+    super.initState();
+    item = BillItem(name: "Chips", price: 3.570);
+  }
 
   getImage(source) async {
     File image = await ImagePicker.pickImage(source: source);
@@ -42,6 +50,7 @@ class _MenuRouteState extends State<MenuRoute>{
           ],
         ),
       ),
+      floatingActionButton: IconButton(icon: Icon(Icons.map),onPressed: (()=>navigateToItem(context, item: item)),),
     );
   }
 }
