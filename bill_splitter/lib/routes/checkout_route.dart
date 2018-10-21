@@ -10,7 +10,7 @@ class CheckoutRoute extends StatelessWidget {
         context: context,
         action: false,
       ),
-      body: Container(),
+      body: Container(),//TODO change container to list of price per person
     );
   }
 }

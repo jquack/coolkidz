@@ -11,10 +11,10 @@ Widget editNameRow({
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Text("Name: " + text),
-        IconButton(
+        /*IconButton(
           icon: Icon(Icons.edit),
           onPressed: (() => editName(context)),
-        )
+        ) */ //TODO later
       ],
     ),
   );
@@ -34,10 +34,10 @@ Widget editPriceRow({
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Text("Price: " + price.toStringAsFixed(2)),
-        IconButton(
+        /*IconButton(
           icon: Icon(Icons.edit),
           onPressed: (() => editPrice(context)),
-        )
+        )*/ //TODO later
       ],
     ),
   );
@@ -67,5 +67,5 @@ Widget editPayersRow({
 }
 
 editNames(BuildContext context) {
-  print("edit!");
+  print("edit!");//TODO add names from nameslist(board) to players(list from editPlayersRow)
 }

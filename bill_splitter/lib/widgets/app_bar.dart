@@ -7,16 +7,19 @@ Widget appBar({
   BuildContext context,
   bool action = true,
 }) {
+  List<Widget> actionButtons = [];
+  if(action){
+    actionButtons.add(IconButton(
+      icon: Icon(Icons.account_balance_wallet),
+      onPressed: (() => navigateToCheckout(context)),
+    ));
+  }
+
   return AppBar(
     title: Text(title),
     leading: IconButton(
         icon: Icon(Icons.arrow_back),
         onPressed: (() => Navigator.of(context).pop())),
-    actions: <Widget>[
-      IconButton(
-        icon: Icon(Icons.account_balance_wallet),
-        onPressed: (() => navigateToCheckout(context)),
-      )
-    ],
+    actions: actionButtons,
   );
 }
