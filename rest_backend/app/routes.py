@@ -70,7 +70,7 @@ def boardinfo(address):
                 'date': ticket.date
             })
 
-        return json.dumps({'address': address, 'expenses': expenses})
+        return json.dumps({'address': address, 'participants': board.users_list , 'expenses': expenses})
     elif request.method == "PUT":
         board_name = request.args.get('name')
         users = eval(request.args.get('users'))
