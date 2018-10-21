@@ -1,3 +1,4 @@
+import 'package:bill_splitter/widgets/app_bar.dart';
 import 'package:bill_splitter/widgets/bill_item_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -38,6 +39,7 @@ class _BillRouteState extends State<BillRoute> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: appBar(title: "Expense", context: context),
       body: bodyWidget,
       floatingActionButton:
           IconButton(icon: Icon(Icons.refresh), onPressed: (() => itemsList())),

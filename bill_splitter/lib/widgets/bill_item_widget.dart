@@ -19,23 +19,35 @@ Widget billItemWidget({BillItem item, BuildContext context}) {
   }
 
   return InkWell(
-    onTap: (() => navigateToItem(context)),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              "Name: " + item.name,
+    onTap: (() => navigateToItem(context, item: item)),
+    child: Card(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  item.name,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(width: 8.0,),
+                Text(
+                  "Price: " + item.price.toStringAsFixed(2),
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
-            Text(
-              "Price: " + item.price.toStringAsFixed(2),
-            ),
-          ],
-        ),
-        payersList(),
-      ],
+          ),
+          payersList(),
+        ],
+      ),
     ),
   );
 }

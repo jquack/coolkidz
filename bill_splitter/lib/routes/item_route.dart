@@ -15,7 +15,6 @@ class _ItemRouteState extends State<ItemRoute> {
   @override
   void initState() {
     super.initState();
-    print(widget.item.name);
   }
 
   @override
@@ -24,9 +23,9 @@ class _ItemRouteState extends State<ItemRoute> {
       appBar: appBar(title: "Item", context: context),
       body: Column(
         children: <Widget>[
-          editRow(context: context, text: widget.item.name),
-          editRow(context: context, text: widget.item.price.toString()),
-          editRow(context: context, text: widget.item.payers.toString()),
+          editNameRow(context: context, text: widget.item.name,),
+          editPriceRow(context: context, price: widget.item.price,),
+          editPayersRow(context: context, payers: widget.item.payers),
         ],
       ),
     );

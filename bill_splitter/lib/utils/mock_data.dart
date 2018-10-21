@@ -1,0 +1,1 @@
+List<String> people = ["Mathias", "John", "Alice", "Leanne", "Andrea"];

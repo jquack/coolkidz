@@ -50,7 +50,6 @@ class _MenuRouteState extends State<MenuRoute>{
           ],
         ),
       ),
-      floatingActionButton: IconButton(icon: Icon(Icons.map),onPressed: (()=>navigateToItem(context, item: item)),),
     );
   }
 }

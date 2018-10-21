@@ -1,20 +1,71 @@
 import 'package:flutter/material.dart';
 
-Widget editRow({BuildContext context, String text, Function validator}) {
+Widget editNameRow({
+  BuildContext context,
+  String text,
+}) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 20.0),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Text(text),
+        Text("Name: " + text),
         IconButton(
           icon: Icon(Icons.edit),
-          onPressed: (() => edit(context)),
+          onPressed: (() => editName(context)),
         )
       ],
     ),
   );
 }
 
-edit(BuildContext context){print("edit!");}
+editName(BuildContext context) {
+}
+
+Widget editPriceRow({
+  BuildContext context,
+  double price,
+}) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Text("Price: " + price.toStringAsFixed(2)),
+        IconButton(
+          icon: Icon(Icons.edit),
+          onPressed: (() => editPrice(context)),
+        )
+      ],
+    ),
+  );
+}
+
+editPrice(BuildContext context) {
+}
+
+Widget editPayersRow({
+  BuildContext context,
+  List payers,
+}) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Text(payers.toString()),
+        IconButton(
+          icon: Icon(Icons.edit),
+          onPressed: (() => editNames(context)),
+        )
+      ],
+    ),
+  );
+}
+
+editNames(BuildContext context) {
+  print("edit!");
+}

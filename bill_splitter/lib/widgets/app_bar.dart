@@ -1,7 +1,12 @@
 import 'package:bill_splitter/utils/navigators.dart';
 import 'package:flutter/material.dart';
 
-Widget appBar({String title, bool backwards = true, BuildContext context}) {
+Widget appBar({
+  String title,
+  bool backwards = true,
+  BuildContext context,
+  bool action = true,
+}) {
   return AppBar(
     title: Text(title),
     leading: IconButton(
