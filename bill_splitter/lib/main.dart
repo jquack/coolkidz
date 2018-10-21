@@ -1,4 +1,5 @@
 import 'package:bill_splitter/routes/menu_route.dart';
+import 'package:bill_splitter/routes/board_route.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(new MyApp());
@@ -8,7 +9,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Bill Spliter',
       theme: new ThemeData(
         // This is the theme of your application.
         //
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
         // counter didn't reset back to zero; the application is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MenuRoute(),
+      home: BoardRoute(),
     );
   }
 }
